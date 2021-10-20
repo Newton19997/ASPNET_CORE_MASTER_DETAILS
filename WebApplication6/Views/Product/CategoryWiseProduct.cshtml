@@ -1,0 +1,50 @@
+﻿@model WebApplication6.Models.Product.CategoryWiseProductViewModel
+@{
+    ViewData["Title"] = "CategoryWiseProduct";
+    // Layout = "_MyLayout";
+}
+
+<h1>CategoryWiseProduct</h1>
+<div class="container">
+    <div class="form-group">
+        <label for="categoryId" class="control-lable">Category</label>
+        <select id="categoryId" asp-items="Model.CategoryList" class="form-control">
+            <option value="">Select Category....</option>
+        </select>
+    </div>
+    <div class="form-group">
+        <label for="productId" class="control-lable">Product</label>
+        <select id="productId" class="form-control">
+            <option value="">Select Product....</option>
+        </select>
+    </div>
+</div>
+@section Scripts{
+    <script>
+        $('#categoryId').change(function () {
+            var CategoryID = $('#categoryId').val();
+            var ProductId = $('#productId');
+
+            var serverurl = "/api/Product/productlist?CategoryID=" + CategoryID;
+            $.ajax(
+                {
+                    url: serverurl,
+                    success: function (response) {
+                        ProductId.empty();
+                        var defaultoption = "<option value=''>Select Product....</option>";
+                        ProductId.append(defaultoption);
+                        var products = response;
+                        $.each(products, (index, product) => {
+                            var option = "<option value='" + product.id + "'>" + product.name + "</option>";
+                            ProductId.append(option);
+                        });
+                    },
+                    error: function (response) {
+                        alert(response);
+                    }
+                });
+        });
+
+    </script>
+}
+

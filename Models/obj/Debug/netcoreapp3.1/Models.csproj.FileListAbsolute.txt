@@ -1,0 +1,10 @@
+F:\ASP_CORE\Models\bin\Debug\netcoreapp3.1\Models.deps.json
+F:\ASP_CORE\Models\bin\Debug\netcoreapp3.1\Models.dll
+F:\ASP_CORE\Models\bin\Debug\netcoreapp3.1\Models.pdb
+F:\ASP_CORE\Models\obj\Debug\netcoreapp3.1\Models.GeneratedMSBuildEditorConfig.editorconfig
+F:\ASP_CORE\Models\obj\Debug\netcoreapp3.1\Models.AssemblyInfoInputs.cache
+F:\ASP_CORE\Models\obj\Debug\netcoreapp3.1\Models.AssemblyInfo.cs
+F:\ASP_CORE\Models\obj\Debug\netcoreapp3.1\Models.csproj.CoreCompileInputs.cache
+F:\ASP_CORE\Models\obj\Debug\netcoreapp3.1\Models.dll
+F:\ASP_CORE\Models\obj\Debug\netcoreapp3.1\Models.pdb
+F:\ASP_CORE\Models\obj\Debug\netcoreapp3.1\Models.csproj.AssemblyReference.cache

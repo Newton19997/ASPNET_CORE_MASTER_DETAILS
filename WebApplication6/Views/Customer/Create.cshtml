@@ -1,0 +1,42 @@
+﻿@model Models.Customer
+@{
+    Layout = "_MyLayout";
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Create</title>
+    <link href="~/lib/bootstrap/dist/css/bootstrap.css" rel="stylesheet" />
+</head>
+<body>
+    <form asp-action="Create"  method="post">
+        <div class="container">
+            <div class="form-group">
+                <label>Name</label>
+                @* <input type="text" name="Name" class="form-control" />
+        @Html.TextBox("Name", null, new { @class = "form-control", id = "customerName" })
+         @Html.TextBoxFor(c=>c.Name, null, new { @class = "form-control", id = "NameId" })*@
+                <input type="text" asp-for="CustomerName" class="form-control" />
+            </div>
+            <div class="form-group">
+                <label>Address</label>
+                <select asp-for="Address" asp-items="ViewBag.AddressList" class="form-control">
+                    <option value="">Select...</option>
+                </select>
+
+                @*htmlhelper eample
+                @Html.DropDownList("Address", new SelectList(ViewBag.AddressList, "Value", "Text"), "Select...", new { @class = "form-control" })
+
+                @Html.DropDownListFor(c=>c.Address, new SelectList(ViewBag.AddressList, "Value", "Text"), "Select...", new { @class = "form-control" })*@
+
+            </div>
+            <div class="form-group">               
+                <input type="submit" value="Save" />
+            </div>
+        </div>
+    </form>
+</body>
+</html>

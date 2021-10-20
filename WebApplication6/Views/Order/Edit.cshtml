@@ -1,0 +1,344 @@
+﻿@model WebApplication6.Models.Order.OrderEditViewModel.EditOrderModel
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h1>Edit</h1>
+
+<h4>Order</h4>
+<hr />
+<div class="row">
+    <div class="col-md-10">
+        <form asp-action="EditOrder">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="id" />
+            <div class="form-group">
+                <label asp-for="OrderNo" class="control-label"></label>
+                <input asp-for="OrderNo" class="form-control" />
+                <span asp-validation-for="OrderNo" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="OrderDate" class="control-label"></label>
+                <input asp-for="OrderDate" class="form-control" />
+                <span asp-validation-for="OrderDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CustomerId" class="control-label"></label>
+                <select asp-for="CustomerId" class="form-control" asp-items="Model.Customers"></select>
+                <span asp-validation-for="CustomerId" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+
+                <input type="submit" value="UpDate" class="btn btn-primary" />
+            </div>
+            <div class="row">
+                <h3>Order Delails</h3>
+            </div>
+            <div class="row">
+                <a href="#" class="btn btn-info" onclick="AddNewOrderDetails(id)"> Add New Order Details</a>
+            </div>
+            <table class="table">
+                <thead>
+                    <tr>
+
+                        <th>
+                            Id
+                            @*@Html.DisplayNameFor(model => model.Id)*@
+                        </th>
+                        <th>
+                            Product
+                            @*@Html.DisplayNameFor(model => model.OrderDetails.)*@
+                        </th>
+                        <th>
+                            Qty
+                            @*@Html.DisplayNameFor(model => model.Address)*@
+                        </th>
+                        <th>
+                            UnitPrice
+                            @*@Html.DisplayNameFor(model => model.Address)*@
+                        </th>
+                        <th>
+                            DiscountPercentage
+                            @*@Html.DisplayNameFor(model => model.Address)*@
+                        </th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody id="tbEditOrderDetails">
+
+                    @foreach (var item in Model.OrderDetails)
+                    {
+
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Id)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Name)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Qty)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.UnitPrice)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.DiscountPercentage)
+                            </td>
+                            <td>
+                                <a href="#" id="btnedit" class="btn btn-warning" onclick="setTimeout(EditOrderDetails(@Html.DisplayFor(modelItem => item.Id)), 3000);">Edit</a>
+                                <a href="#" class="btn btn-danger" onclick="DeleteOrderDetails(@Html.DisplayFor(modelItem => item.Id));">Delete</a>
+                                @*<a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                                    <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>*@
+                            </td>
+                        </tr>
+
+
+                    }
+                </tbody>
+            </table>
+            <div class="form-group">
+                @*  <input type="submit" value="Save" class="btn btn-primary" />*@
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@*create A popup Model With Add a New product*@
+<div class="modal fade" id="MyModel">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <a href="#" class="close" data-dismiss="modal">&times;</a><br /><br /><br />
+                <h4 id="ModalTitle"></h4>
+            </div>
+            <div class="modal-body">
+                <form id="form">
+                    <fieldset id="Submitform">
+                        @Html.HiddenFor(m => m.Id, new { @id= "OrdetailsID" })
+                        <div class="form-group">
+                            <label for="productId" class="control-label">Product</label>
+                            <select id="productId" name="productId" asp-items="Model.ProductSelectItem" class="form-control">
+                                <option>Select Product.........</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="Qty" class="control-label">Qty</label>
+                            <input type="number" name="Qty" id="Qty" class="form-control" />
+                            @* @Html.TextBoxFor(m => m.Qty, new { @id = "Qty", @class = "form-control", @placeholder = "Qty" })*@
+                        </div>
+                        <div class="form-group">
+                            <label for="UnitPrice" class="control-label">UnitPrice</label>
+                            <input type="number" name="UnitPrice" id="UnitPrice" class="form-control" />
+                            @* @Html.TextBoxFor(m => m.UnitPrice, new { @id = "UnitPrice", @class = "form-control", @placeholder = "UnitPrice" })*@
+                        </div>
+                        <div class="form-group">
+
+
+                            <label for="DiscountPercentage" class="control-label">DiscountPercentage</label>
+                            <input type="text" name="DiscountPercentage" id="DiscountPercentage" class="form-control" />
+                            @*@Html.TextBoxFor(m => m.DiscountPercentage, new { @id = "DiscountPercentage", @class = "form-control", @placeholder = "DiscountPercentage" })*@
+                        </div>
+
+                        @*<div class="form-group">
+                                @Html.DropDownListFor(m => m.ProductId, ViewBag.productList as SelectList, "---Select Product---", new { @id = "ProductId", @class = "form-control" })
+                            </div>*@
+                        <div class="form-group">
+                            <a href="#" class="btn btn-block btn-danger" id="NewAddProduct">Add Order Details</a>
+                        </div>
+                    </fieldset>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@*//editmodel*@
+<div class="modal fade" id="EditMyModel">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <a href="#" class="close" data-dismiss="modal">&times;</a><br /><br /><br />
+                <h4 id="ModalTitle1"></h4>
+            </div>
+            <div class="modal-body">
+                <form id="form">
+                    <fieldset id="Submitform1">
+                        @Html.HiddenFor(m => m.Id, new { @id = "OrdetailsID1" })
+                        <input type="hidden" name="OrderId" id="OrderId" class="form-control" />
+                        <div class="form-group">
+                            <label for="productId" class="control-label">Product</label>
+                            <select id="productId1" name="productId" asp-items="Model.ProductSelectItem" class="form-control">
+                                <option>Select Product.........</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="Qty" class="control-label">Qty</label>
+                            <input type="number" name="Qty" id="Qty1" class="form-control" />
+                            @* @Html.TextBoxFor(m => m.Qty, new { @id = "Qty", @class = "form-control", @placeholder = "Qty" })*@
+                        </div>
+                        <div class="form-group">
+                            <label for="UnitPrice" class="control-label">UnitPrice</label>
+                            <input type="number" name="UnitPrice" id="UnitPrice1" class="form-control" />
+                            @* @Html.TextBoxFor(m => m.UnitPrice, new { @id = "UnitPrice", @class = "form-control", @placeholder = "UnitPrice" })*@
+                        </div>
+                        <div class="form-group">
+
+
+                            <label for="DiscountPercentage" class="control-label">DiscountPercentage</label>
+                            <input type="text" name="DiscountPercentage" id="DiscountPercentage1" class="form-control" />
+                            @*@Html.TextBoxFor(m => m.DiscountPercentage, new { @id = "DiscountPercentage", @class = "form-control", @placeholder = "DiscountPercentage" })*@
+                        </div>
+
+                        @*<div class="form-group">
+            @Html.DropDownListFor(m => m.ProductId, ViewBag.productList as SelectList, "---Select Product---", new { @id = "ProductId", @class = "form-control" })
+        </div>*@
+                        <div class="form-group">
+                            <a href="#" class="btn btn-block btn-danger" id="EditAddProduct">Edit Order Details</a>
+                        </div>
+                    </fieldset>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+    <script>
+        //Show the Popup Modal OrderID
+        function AddNewOrderDetails(id) {
+            $("#form")[0].reset();
+            $("#ModalTitle").html("Add New Order Details");
+            $("#MyModel").modal();
+
+        }
+
+        //Show the popup Modal For edit
+
+
+
+        function EditOrderDetails(ordetailsID) {
+            // var url = "/api/Order/OrderDetails?Id=" + ordetailsID;
+            $("#ModalTitle1").html("Update Order Details");
+            $("#EditMyModel").modal();
+            //var serverurl = "/api/Order/OrderDetails?Id=" + ordetailsID;
+            $.ajax(
+                {
+                    url: "/api/Order/OrderDetails?Id=" + ordetailsID,
+                    success: function (data) {
+                        var oDs = data;
+                        console.log(oDs);
+                        $("#OrdetailsID1").val(oDs[0].id);
+                        $("#OrderId").val(oDs[0].orderId);
+                        $("#productId1").val(oDs[0].productId);
+                        $("#Qty1").val(oDs[0].qty);
+                        $("#UnitPrice1").val(oDs[0].unitPrice);
+                        $("#DiscountPercentage1").val(oDs[0].discountPercentage);
+                    },
+                    error: function (response) {
+                        alert(response);
+                    }
+                });
+
+
+            //$.ajax({
+            //    type: "GET",
+            //    url: url,
+            //    success: function (response) {
+            //        var oDs = response;
+            //        console.log(oDs);
+            //        $("#OrdetailsID").val(oDs.id);
+            //        $("#productId").val(oDs.ProductId);
+            //        $("#Qty").val(oDs.Qty);
+            //        $("#UnitPrice").val(oDs.UnitPrice);
+            //        $("#DiscountPercentage").val(oDs.DiscountPercentage);
+            //    }
+
+            //});
+        }
+        /*
+        $("#NewAddProduct").click(function () {
+            var data = $("#Submitform").serialize();
+            var d = JSON.stringify(data);
+            $.ajax({
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                url: "/api/OrderDetail/Details",
+                type: "POST",
+                dataType: 'json',
+                data: d,
+                success: function (Result) {
+                    alert("Success..");
+                    $("#MyModel").modal("hide");
+                }
+
+            });
+        });
+          */
+        
+
+      $(document).ready(function () {
+          $("#NewAddProduct").click(function (e) {
+              //alert('OK');
+              e.preventDefault();
+              var apiurl = "/api/Order/OrderDetails";
+              var data = $("#Submitform").serialize();
+              //var data = {
+              //    CountryName: $("#<%=txtCountry.ClientID%>").val()
+              //}
+              $.ajax({
+                  url: apiurl,
+                  type: 'POST',
+                  dataType: 'json',
+                  data: data,
+                  success: function (d) {
+                      alert("Saved Successfully");
+                      $("#MyModel").modal("hide");
+                       document.getElementById("postform").reset();
+                  },
+                  error: function () {
+                      alert("Error please try again");
+                  }
+              });
+          });
+      });
+
+        $(document).ready(function () {
+            $("#EditAddProduct").click(function (e) {
+                //alert('OK');
+                e.preventDefault();
+                var apiurl = "/api/Order/editOrderDetails";
+                var data = $("#Submitform1").serialize();
+                //var data = {
+                //    CountryName: $("#<%=txtCountry.ClientID%>").val()
+                //}
+                $.ajax({
+                    url: apiurl,
+                    type: 'POST',
+                    dataType: 'json',
+                    data: data,
+                    success: function (d) {
+                        alert("Saved Successfully");
+                        $("#EditMyModel").modal("hide");
+                        document.getElementById("postform").reset();
+                        location.reload();
+                    },
+                    error: function () {
+                        alert("Error please try again");
+                    }
+                });
+            });
+        });
+
+
+    </script>
+}
